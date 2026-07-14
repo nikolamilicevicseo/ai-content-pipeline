@@ -1,6 +1,6 @@
 # AI Content Pipeline — the full setup
 
-This is the complete system behind the "How I write blogs with Claude" post. Five pieces, same order as the post. Everything client-specific has been stripped out; every mechanism is intact.
+The pipeline I use to write SEO content with Claude: five pieces that make the careless path impossible. Everything client-specific has been stripped out; every mechanism is intact.
 
 It runs on Claude Code (or any harness that supports PreToolUse hooks), but the ideas transfer to any AI writing setup: the gates are just scripts that block a file write until evidence exists on disk.
 
