@@ -1,0 +1,29 @@
+# Banned-term denylist. Read by term_lint.py.
+# Per-line format (TAB-separated):  SEVERITY <TAB> regex <TAB> message
+# SEVERITY: ERROR = fails the lint;  WARN = reported, human decides.
+# Lines starting with # are ignored. Regex is case-insensitive.
+# Append-only: every time a client corrects a term, add a rule. The same
+# mistake must never reach them twice.
+
+# --- Universal AI tells (start here, extend per client) ---
+ERROR	\bseamless(ly)?\b	AI filler — say what actually happens instead
+ERROR	\bcomprehensive\b	AI filler — name the specific things covered
+ERROR	in today'?s\s+(fast-paced|digital|ever-changing|competitive)\s+\w+	AI opener — delete the sentence, start with the point
+ERROR	\bdelve\b	AI tell — "look at", "cover", "go through"
+ERROR	\b(unlock|unleash|elevate|empower)\b	AI marketing verb — say the concrete benefit
+ERROR	\bgame-?changer\b	AI hype — show the change, don't label it
+WARN	\bleverage\b	usually "use"
+WARN	\brobust\b	usually means nothing — name the property
+WARN	\bcutting-?edge\b	hype — name the actual technology
+WARN	\bstreamline[ds]?\b	say what got faster or simpler
+WARN	\bholistic\b	filler
+WARN	\bin the world of\b	AI opener
+WARN	\bwhether you'?re\b	AI construction — pick the actual reader and talk to them
+WARN	\bit'?s (important|worth) (to note|noting)\b	throat-clearing — just say the thing
+WARN	\blook no further\b	sales filler
+WARN	—	em-dash — most client review flows read it as an AI tell; use a period or comma
+WARN	\*\*	markdown bold leaks as asterisks in .docx — plain text in finals
+
+# --- Per-client rules go below. Real examples of the format: ---
+# ERROR	<term the client corrected>	<what to say instead + which review comment>
+# WARN	\bboxes\b	industry slang the client dislikes — use the proper term (review 03-12 #4)
