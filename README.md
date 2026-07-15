@@ -55,6 +55,10 @@ In your project's `.claude/settings.json`:
 
 Exit code 2 from a hook blocks the write and feeds the stderr message back to the model, so it knows exactly what's missing and goes to fix it.
 
+## How it runs day to day
+
+You don't run any of these scripts by hand. Once the hooks are wired, your entire input per page is three messages to Claude: research this, outline approved, write. Claude does the research, builds the outline, writes, runs the linter and spawns the reviewer — and the hooks block it at the file level if it tries to skip a step. The commands below exist for spot-checking, not for the daily flow.
+
 ## Manual checks
 
 ```
