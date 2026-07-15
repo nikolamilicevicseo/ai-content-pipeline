@@ -2,6 +2,8 @@
 
 The pipeline I use to write SEO content with Claude: five pieces that make the careless path impossible. Everything client-specific has been stripped out; every mechanism is intact.
 
+**Easiest setup:** download this repo into your project folder, open Claude Code there and say "set up this pipeline from the README". It configures everything itself. The sections below explain what it's doing, for when you want to look under the hood.
+
 It runs on Claude Code (or any harness that supports PreToolUse hooks), but the ideas transfer to any AI writing setup: the gates are just scripts that block a file write until evidence exists on disk.
 
 ## The five pieces
