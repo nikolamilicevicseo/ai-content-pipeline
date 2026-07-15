@@ -2,7 +2,7 @@
 
 The pipeline I use to write SEO content with Claude: five pieces that make the careless path impossible. Everything client-specific has been stripped out; every mechanism is intact.
 
-**Easiest setup:** download this repo into your project folder, open Claude Code there and say "set up this pipeline from the README". It configures everything itself. The sections below explain what it's doing, for when you want to look under the hood.
+**Getting started:** copy this folder into your project, open Claude Code there and start working. A ready-made hooks file (`.claude/settings.json`) ships with the repo, so there is nothing to configure. If anything doesn't click, just tell Claude "set this up from the README" and it sorts itself out. The sections below explain what's happening under the hood.
 
 It runs on Claude Code (or any harness that supports PreToolUse hooks), but the ideas transfer to any AI writing setup: the gates are just scripts that block a file write until evidence exists on disk.
 
@@ -21,7 +21,7 @@ It runs on Claude Code (or any harness that supports PreToolUse hooks), but the 
 ```
 your-client-folder/
   _context/facts/banned_terms.txt     <- denylist (see 4-humanize)
-  _scripts/                           <- put the .py files here
+  1-research-gate/ ... 5-review-gate/ <- the folders from this repo, as they are
   runs/<page-slug>/
     _raw/                             <- research evidence lands here
       s1*.json                        <- SERP capture, {"ok": true, ...}
@@ -35,9 +35,9 @@ your-client-folder/
 
 How you capture the research is up to you (browser automation, an API, by hand). The gate only checks that the evidence exists and is real.
 
-## Wiring the hooks (Claude Code)
+## The hooks (already wired)
 
-In your project's `.claude/settings.json`:
+The repo ships with a ready hooks file, `settings.json` — Claude Code reads it from `.claude/settings.json` in your project (copy it there if your download didn't include it):
 
 ```json
 {
@@ -46,8 +46,8 @@ In your project's `.claude/settings.json`:
       {
         "matcher": "Write|Edit",
         "hooks": [
-          { "type": "command", "command": "python _scripts/guard_writer.py" },
-          { "type": "command", "command": "python _scripts/guard_review.py" }
+          { "type": "command", "command": "python 1-research-gate/guard_writer.py" },
+          { "type": "command", "command": "python 5-review-gate/guard_review.py" }
         ]
       }
     ]
@@ -55,18 +55,18 @@ In your project's `.claude/settings.json`:
 }
 ```
 
-Exit code 2 from a hook blocks the write and feeds the stderr message back to the model, so it knows exactly what's missing and goes to fix it.
+Exit code 2 from a hook blocks the write and feeds the stderr message back to the model, so it knows exactly what's missing and goes to fix it. If you keep the scripts in a different folder, adjust the paths.
 
 ## How it runs day to day
 
 You don't run any of these scripts by hand. Once the hooks are wired, your entire input per page is three messages to Claude: research this, outline approved, write. Claude does the research, builds the outline, writes, runs the linter and spawns the reviewer — and the hooks block it at the file level if it tries to skip a step. The commands below exist for spot-checking, not for the daily flow.
 
-## Manual checks
+## Manual checks (optional)
 
 ```
-python _scripts/review_gate.py                # is every page really reviewed?
-python _scripts/term_lint.py                  # banned terms in every final
-python _scripts/repetition_check.py runs/<slug>/08-final-<slug>.md
+python 5-review-gate/review_gate.py           # is every page really reviewed?
+python 4-humanize/term_lint.py                # banned terms in every final
+python 5-review-gate/repetition_check.py runs/<slug>/08-final-<slug>.md
 ```
 
 ## For the humanization pass

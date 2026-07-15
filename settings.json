@@ -1,0 +1,13 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          { "type": "command", "command": "python 1-research-gate/guard_writer.py" },
+          { "type": "command", "command": "python 5-review-gate/guard_review.py" }
+        ]
+      }
+    ]
+  }
+}
